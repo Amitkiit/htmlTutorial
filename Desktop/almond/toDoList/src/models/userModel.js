@@ -1,30 +1,29 @@
 const { sequelize, DataTypes } = require("sequelize");
 
 module.exports=(sequelize,DataTypes)=>{
-const tasks = sequelize.define('tasks',{
-    task:{
-        type:DataTypes.STRING,
-        allowNull:false
-    },
+const users = sequelize.define('users',{
     name:{
         type:DataTypes.STRING,
         allowNull:false
     },
-    dueDate:{
+    // user_Id:{
+    //   type: DataTypes.STRING,
+    //   allowNull:false
+    // },
+    number:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+    email:{
        type: DataTypes.STRING,
        default:false
     },
-    done:{
-        type: DataTypes.BOOLEAN,
+    password:{
+        type: DataTypes.STRING,
         defaultValue: false
-    },
- 
-    isDeleted:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:false
-    },
+    },    
 });
 
-return tasks
+return users
 
 }
