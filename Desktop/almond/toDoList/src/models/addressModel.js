@@ -10,7 +10,10 @@ const locations  = sequelize.define('locations ',{
         type:DataTypes.STRING,
         allowNull:false
     },
-   
+    age:{
+        type:DataTypes.STRING,
+        defaultValue:0
+    }    
 });
 
 return locations 

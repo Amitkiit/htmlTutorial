@@ -47,77 +47,61 @@ const loginUser=async function(req,res){
 
 // ==============this is the API for find user as per userId=====================================//
 
-// const findUser = async function(req, res) {
-//   const userId= req.params.userId;
-//   let userNotExist= await Users.findOne({
-//     where:{
-//       id:userId
-//     }
-//   })
-//   if(!userNotExist)return res.status(400).send({status:false,message:"user are not exist"})
-//     const user = await Users.findAll({
-//       include:[{
-//         model:Tasks,
-//         as:"tasks",
-//         where:{
-//           isDeleted:false
-//         }
-//       }],
-//       where:{
-//         id:userId,
-//       }
-//     })
-//     res.status(200).send({status:true,data:user})
-  
-//    }
-
-   //===========get task address=======================================//
-   const findUser = async function(req, res) {
-    const userId= req.params.userId;
-    const taskId = req.params.taskId
-    let userNotExist = await Users.findOne({
+const findUser = async function(req, res) {
+  const userId= req.params.userId;
+  let userNotExist= await Users.findOne({
+    where:{
+      id:userId
+    }
+  })
+  if(!userNotExist)return res.status(400).send({status:false,message:"user are not exist"})
+    const user = await Users.findAll({
+      include:[{
+        model:Tasks,
+        as:"tasks",
+        where:{
+          isDeleted:false
+        }
+      }],
       where:{
-        id:userId
+        id:userId,
       }
     })
-    if(!userNotExist)return res.status(400).send({status:false,message:"user are not exist"})
-      const user = await Users.findAll({
-        include:[{
-          model:Tasks,
-          as:"tasks",
-          where:{
-            isDeleted:false
-          }
-        },
-        {
-          model: Locations,
-          as: "locations",
-          where:{
-            task_Id:taskId
-          }
-        }
-      
-      ],
-        // include:[{
-        //   model:Locations,
-        //   as:"locations",
-        // }],
-        where:{
-          id:userId,
-        }
-      })
-      res.status(200).send({status:true,data:user})  
-     }
-
+    res.status(200).send({status:true,data:user})
+  
+   }
 
   //=====================update the task if the user is valid==================================//
+  // const updateTaskByValidUser= async function(req,res){
+  //   let userId = req.params.userId
+  //   let taskId = req.params.taskId
+  //   let data = req.body
+  //   let findTask = await Tasks.findOne({
+  //     where:{
+  //       [Op.and]:[
+  //         {user_Id:{[Op.like]:userId}},
+  //         {id:{[Op.like]:taskId}}
+  //       ]
+  //     }
+  //   })  
+  //   if(findTask.isDeleted==0){
+  //     let updateTask = await Tasks.update(
+  //       data,
+  //       {where:{id:taskId}},    
+  //     )
+  //      res.status(200).send({status:true,message:"data updated successfully",data:updateTask})
+  //   }
+  //   else {
+  //     return res.status(400).send({status:false,message:"task is already deleted"})
+  //   }
+  // }
 
-
+  //==================practice purpose =====================================================//
 
   const updateTaskByValidUser= async function(req,res){
     let userId = req.params.userId
     let taskId = req.params.taskId
-    let data = req.body
+   
     let findTask = await Tasks.findOne({
       where:{
         [Op.and]:[
@@ -127,23 +111,28 @@ const loginUser=async function(req,res){
       }
     })  
     if(findTask.isDeleted==0){
-      let updateTask = await Tasks.update(
-        data,
-        {where:{id:taskId}}
-      )
-       res.status(200).send({status:true,message:updateTask})
+      let data = req.body
+      let {task,name,duedate,done} = data
+      if(task) findTask.task = task
+      if(name) findTask.name = name
+      if(duedate) findTask.duedate = duedate
+      if(done) findTask.done = done
+      let newUpdate= await findTask.save()
+      if(!newUpdate) return res.status(400).send({status:false,message:"task is not updated"})
+      res.status(200).send({status:true,data:newUpdate})
     }
-    else {
+    else{
       return res.status(400).send({status:false,message:"task is already deleted"})
     }
   }
 
-  //==================delete by the with the valid user==============================//
+
+  //==================delete by with the valid user==============================//
   const deleteTaskByValidUser = async function(req,res){
     let userId= req.params.userId
     let taskId = req.params.taskId
-    console.log(userId)
-    console.log(taskId)
+    // console.log(userId)
+    // console.log(taskId)
     let userFind= await Tasks.findOne({
       where:{
         [Op.and]:[
@@ -152,19 +141,22 @@ const loginUser=async function(req,res){
         ]
       }
     })
+    if (!userFind) return res.status(400).send({status:false,message:"task or user are not exist in db"})
     if(userFind.isDeleted==0){
       let deleteTask= await Tasks.update(
         {isDeleted:true},
         {where:{id:taskId}}
       )
-      res.status(200).send({status:true,data:deleteTask})
+      res.status(200).send({status:true,data:"task deleted successfully"})
     }
     else{
       return res.status(400).send({message:"task is already deleted"})
     }
   }
 
-  //=======================find user detail with the task and address also of user===================//
+  //=======================user want to perform aggreagation opertaion===================//
+
+ 
 
   
   

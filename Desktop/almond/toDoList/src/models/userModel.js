@@ -6,10 +6,6 @@ const users = sequelize.define('users',{
         type:DataTypes.STRING,
         allowNull:false
     },
-    // user_Id:{
-    //   type: DataTypes.STRING,
-    //   allowNull:false
-    // },
     number:{
         type:DataTypes.STRING,
         allowNull:false
@@ -21,7 +17,7 @@ const users = sequelize.define('users',{
     password:{
         type: DataTypes.STRING,
         defaultValue: false
-    },    
+    }   
 });
 
 return users
