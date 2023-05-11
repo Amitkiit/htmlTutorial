@@ -10,13 +10,12 @@ module.exports=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
-        rating:{
-            type:DataTypes.INTEGER,
-            validate: {
-                min: 0,
-                max: 5
-              },
-            defaultValue: false 
+        color:{
+            type:DataTypes.STRING,
+        },
+        size:{
+            type:DataTypes.ENUM('S','M','L','XL','XX')
+
         },
         price:{
             type:DataTypes.DECIMAL(10, 2),
@@ -25,6 +24,10 @@ module.exports=(sequelize,DataTypes)=>{
         isDeleted:{
             type: DataTypes.BOOLEAN,
             defaultValue:false
+        },
+        quentity:{
+            type:DataTypes.DECIMAL
+
         }
 
     });

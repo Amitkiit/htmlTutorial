@@ -4,12 +4,13 @@ const router = express.Router()
 const {userCreate,loginUser,findProduct, updateUser}= require("../controller/userController")
 const {createProduct,getProduct,updateProduct,deleteProduct,likeFilterOutOnPerticularProduct,countAllLikeProduct} = require("../controller/productController")
 const {createLike}= require("../controller/likeController")
+const {createOrder,orderPlace,returnPlaceOrder} = require("../controller/orderController")
 
 //==========================create  user==========================================================//
-//router.post("/createUser",userCreate)
-//router.post("/userLogin",loginUser)
-//router.get("/findProductWithLikeWithUserDetails/:userId/:productId",findProduct)
-//router.get("/findProductWithLike/:productId")
+router.post("/createUser",userCreate)
+router.post("/userLogin",loginUser)
+router.get("/findProductWithLikeWithUserDetails/:userId/:productId",findProduct)
+router.get("/findProductWithLike/:productId")
 
 
 //===========================create products======================================================//
@@ -23,6 +24,11 @@ router.delete("/deleteProduct/:productId",deleteProduct)
 //==========================create Like =========================================================//
 router.post("/createLike",createLike)
 
+//=========================create Ordre =====================================================//
+router.post("/createOrder",createOrder)
+router.post('/orderPlace/:userId/:productId',orderPlace)
+router.post('/returnPlacedOrder/:userId/:productId/:orderId',returnPlaceOrder)
+
 
 
 
@@ -30,10 +36,10 @@ router.post("/createLike",createLike)
 
 //=============@@@@@@@@@@@@@@@@@@@@ RAW ROUTE ======================================================//
 
-router.post("/createUser",userCreate)
-router.post("/userLogin",loginUser)
-router.put("/updateUser/:userId",updateUser)
-router.delete('/deleteYYY/:productId',deleteProduct)
+// router.post("/createUser",userCreate)
+// router.post("/userLogin",loginUser)
+// router.put("/updateUser/:userId",updateUser)
+// router.delete('/deleteYYY/:productId',deleteProduct)
 // router.get("/findProductWithLikeWithUserDetails/:userId/:productId",findProduct)
 // router.get("/findProductWithLike/:productId")
 

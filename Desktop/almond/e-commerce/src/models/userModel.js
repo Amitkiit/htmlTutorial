@@ -17,7 +17,11 @@ const users = sequelize.define('users',{
     password:{
         type: DataTypes.STRING,
         defaultValue: false
-    } 
+    },
+    balance:{
+        type: DataTypes.FLOAT,
+
+    }, 
 });
 
 return users

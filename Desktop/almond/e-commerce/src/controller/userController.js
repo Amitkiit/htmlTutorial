@@ -17,124 +17,125 @@ const Likes = db.likes;
 
 
 //=========================create user ==========================================//
-//  const userCreate = async function (req, res) {
-//   let data = req.body;
-//   const { name, email, number, password } = req.body;
-//   if (!validateEmail(email))
-//     return res
-//       .status(400)
-//       .send({ status: false, message: "email is not valid form" });
-//   if (!validPassword(password))
-//     return res
-//       .status(400)
-//       .send({ status: false, message: "password is not in valid form" });
-//   if (!validMobile(number))
-//     return res
-//       .status(400)
-//       .send({ message: "mobile number is not in valid form" });
-//   let uniqueMobile = await Users.findOne({
-//     where: {
-//       number: number,
-//     },
-//   });
-//   if (uniqueMobile)
-//     return res
-//       .status(200)
-//       .send({ status: true, message: "mobile number is already exist" });
-//   let uniqueEmail = await Users.findOne({
-//     where: {
-//       email: email,
-//     },
-//   });
-//   if (uniqueEmail)
-//     return res
-//       .status(200)
-//       .send({ status: false, message: "email number is already exist" });
-//   let saltRound = 10;
-//   const hashedPassword = await bcrypt.hash(password, 10);
-//   data.password = hashedPassword;
-//   let createuser = await Users.create(data);
+ const userCreate = async function (req, res) {
+  let data = req.body;
+  const { name, email, number, password } = req.body;
+  if (!validateEmail(email))
+    return res
+      .status(400)
+      .send({ status: false, message: "email is not valid form" });
+  if (!validPassword(password))
+    return res
+      .status(400)
+      .send({ status: false, message: "password is not in valid form" });
+  if (!validMobile(number))
+    return res
+      .status(400)
+      .send({ message: "mobile number is not in valid form" });
+  let uniqueMobile = await Users.findOne({
+    where: {
+      number: number,
+    },
+  });
+  if (uniqueMobile)
+    return res
+      .status(200)
+      .send({ status: true, message: "mobile number is already exist" });
+  let uniqueEmail = await Users.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (uniqueEmail)
+    return res
+      .status(200)
+      .send({ status: false, message: "email number is already exist" });
+  let saltRound = 10;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  data.password = hashedPassword;
+  let createuser = await Users.create(data);
 
-//   res.status(201).send({ status: true, data: createuser });
-// };
+  res.status(201).send({ status: true, data: createuser });
+};
 
 //-----------------------------raw query for userCreation ----------------------------------------//
 
-const userCreate = async function(req,res){
-    const {name,number,email,password} = req.body
-    const now = new Date();
-    let queries = `INSERT INTO Users (name,number,email,password,createdAt,updatedAt) VALUES (?,?,?,?,?,?)`
+// const userCreate = async function(req,res){
+//     const {name,number,email,password} = req.body
+//     const now = new Date();
+//     let queries = `INSERT INTO Users (name,number,email,password,createdAt,updatedAt) VALUES (?,?,?,?,?,?)`
     
-    //console.log(name)
-    const createUser= await db.sequelize.query( queries,   //sequelize. query
-        {
-            replacements:[name, number, email, password,now,now],
-            type:QueryTypes.INSERT
-        }
-    )
+//     //console.log(name)
+//     const createUser= await db.sequelize.query( queries,   //sequelize. query
+//         {
+//             replacements:[name, number, email, password,now,now],
+//             type:QueryTypes.INSERT
+//         }
+//     )
+//     const getUser = await Users.findOne({
+//         where: { id: createUser[0] } // assuming the primary key is "id"
+//     });
+//     console.log(getUser)
+//     res.status(201).send({ data: getUser });    
+// }
 
-    const getUser = await Users.findOne({
-        where: { id: createUser[0] } // assuming the primary key is "id"
-    });
-    console.log(getUser)
-    res.status(201).send({ data: getUser });    
-}
+//==========================login user  =====================================================//
 
-//==========================login user =====================================================//
-
-// const loginUser = async function (req, res) {
-//   let data = req.body;
-//   const { email, password } = data;
-//   let user = await Users.findOne({
-//     where: {
-//       email: email,
-//     },
-//   });
-//   if (!user)
-//     return res
-//       .status(200)
-//       .send({ status: false, message: "user are not register" });
-//   bcrypt.compare(password, user.password, function (err, result) {
-//     if (result) {
-//       let token = jwt.sign({ userId: user.id }, "my second project");
-//       res.header("x-api-key", token);
-//       res
-//         .status(200)
-//         .send({
-//           status: true,
-//           message: "logging successfully",
-//           data: { user: user, token },
-//         });
-//     } else {
-//       return res
-//         .status(400)
-//         .send({ status: false, message: "password is incorrect" });
-//     }
-//   });
-// };
+const loginUser = async function (req, res) {
+  let data = req.body;
+  const { email, password } = data;
+  let user = await Users.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (!user)
+    return res
+      .status(200)
+      .send({ status: false, message: "user are not register" });
+  bcrypt.compare(password, user.password, function (err, result) {
+    if (result) {
+      let token = jwt.sign({ userId: user.id }, "my second project");
+      res.header("x-api-key", token);
+      res
+        .status(200)
+        .send({
+          status: true,
+          message: "logging successfully",
+          data: { user: user, token },
+        });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, message: "password is incorrect" });
+    }
+  });
+};
 
 //-------------------raw query for findOne -----------------------------------------------------//
-const loginUser = async function (req, res) {
-        const data = req.body;
-        const { email, password } = data;
-        const queries = `SELECT * FROM Users WHERE email = "${email}" limit 1`
-        const [one , two] = await db.sequelize.query(queries);
-        res.status(200).send({ status: true, data: one});    
+// const loginUser = async function (req, res) {
+//         const data = req.body;
+//         const { email, password } = data;
+//         const queries = `SELECT * FROM Users WHERE email = "${email}" limit 1`
+//         const [one , two] = await db.sequelize.query(queries);
+//         res.status(200).send({ status: true, data: one});    
     
-  };
+//   };
  
 
 //---------------------raw query for update user ----------------------------------------------------//
 
-const updateUser = async function(req,res){
+// const updateUser = async function(req,res){
 
-let userId = req.params.userId  
-let data = req.body
-const {name,password} = data 
-let queries =`UPDATE Users SET name = '${name}' WHERE id = ${userId}`;
-let [result] = await db.sequelize.query(queries)
-res.status(200).send({status:true,data:result})
-}
+// let userId = req.params.userId  
+// //let data = req.body
+// let data = req.query
+// const {name,password} = data 
+// //let queries =`UPDATE Users SET name = '${name}' WHERE id = ${userId}`;   passing data by the postman
+// let queries =`UPDATE Users SET name='${name}' WHERE id = ${userId}`;    // passsing data by the query 
+// let [result] = await db.sequelize.query(queries, {types})
+// res.status(200).send({status:true,data:result})
+// }
 
 //===============find product based on userId and what is the responce from user side on the perticular product ======================================//
 const findProduct = async function (req, res) {
@@ -166,7 +167,7 @@ const findProduct = async function (req, res) {
 
 //===============find product based on the liks or dislike =============================//
 
-module.exports = { userCreate, loginUser, findProduct,updateUser};
+module.exports = { userCreate, loginUser, findProduct};
  
 
 
