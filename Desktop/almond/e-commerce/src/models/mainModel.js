@@ -24,6 +24,7 @@ db.users = require('./userModel')(sequelize,DataTypes);
 db.products= require('./productModel')(sequelize,DataTypes);
 db.orders = require('./orderModel')(sequelize,DataTypes);
 db.likes= require('./likeModel')(sequelize,DataTypes);
+db.datamaintains= require('./dataMaintainModel')(sequelize,DataTypes);
 
 //====================relation between user and product==============================//
 // db.users.hasMany(db.products,{
@@ -81,6 +82,18 @@ db.orders.belongsTo(db.users,{
     foreignKey:'user_Id',
     as:'users'
 })
+//==========================relation between product and order==================================================//
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------//
 
 db.sequelize.sync({force:false})
 .then(()=> {

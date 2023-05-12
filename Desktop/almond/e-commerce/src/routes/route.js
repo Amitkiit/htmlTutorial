@@ -5,6 +5,7 @@ const {userCreate,loginUser,findProduct, updateUser}= require("../controller/use
 const {createProduct,getProduct,updateProduct,deleteProduct,likeFilterOutOnPerticularProduct,countAllLikeProduct} = require("../controller/productController")
 const {createLike}= require("../controller/likeController")
 const {createOrder,orderPlace,returnPlaceOrder} = require("../controller/orderController")
+const {createStock} = require('../controller/dataMaintain')
 
 //==========================create  user==========================================================//
 router.post("/createUser",userCreate)
@@ -28,6 +29,9 @@ router.post("/createLike",createLike)
 router.post("/createOrder",createOrder)
 router.post('/orderPlace/:userId/:productId',orderPlace)
 router.post('/returnPlacedOrder/:userId/:productId/:orderId',returnPlaceOrder)
+
+//====================maiantane stock=====================================//
+router.post("/maintain",createStock)
 
 
 
