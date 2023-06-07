@@ -4,10 +4,11 @@ const router = express.Router()
 const {userCreate,loginUser,findProduct, updateUser}= require("../controller/userController")
 const {createProduct,getProduct,updateProduct,deleteProduct,likeFilterOutOnPerticularProduct,countAllLikeProduct} = require("../controller/productController")
 const {createLike}= require("../controller/likeController")
-const {createOrder,orderPlace,returnPlaceOrder} = require("../controller/orderController")
+const {createOrder,orderPlace,withoutCart,returnPlaceOrder,returnPlaceOrderwithoutCart,deleteCart,placeOrderWithExistOffer} = require("../controller/orderController")
 const {createStock} = require('../controller/dataMaintain')
+const {techProduct,ratingOnProduct} = require('../controller/techProdController')
 
-//==========================create  user==========================================================//
+//==========================create user==========================================================//
 router.post("/createUser",userCreate)
 router.post("/userLogin",loginUser)
 router.get("/findProductWithLikeWithUserDetails/:userId/:productId",findProduct)
@@ -20,18 +21,30 @@ router.get("/findProduct",getProduct)
 router.get("/findProductWithLike/:productId",likeFilterOutOnPerticularProduct)
 router.get("/getProductBasisOnLike/:productId",countAllLikeProduct)   //get all like on the basis of product id
 router.put('/upgradeProdcut/:productId',updateProduct)
-router.delete("/deleteProduct/:productId",deleteProduct)
+router.put("/deleteProduct/:productId",deleteProduct)
 
-//==========================create Like =========================================================//
+//=====================offer router ====================================================//
+
+router.post('/getProductWithOffer/:userId/:productId',placeOrderWithExistOffer)
+
+//==========================create Like ================================================//
 router.post("/createLike",createLike)
 
-//=========================create Ordre =====================================================//
+//=========================create Order =====================================================//
 router.post("/createOrder",createOrder)
 router.post('/orderPlace/:userId/:productId',orderPlace)
+router.post('/withoutCart/:userId/:productId',withoutCart)
 router.post('/returnPlacedOrder/:userId/:productId/:orderId',returnPlaceOrder)
+router.post('/returnPlacedOrder/:userId/:productId/',returnPlaceOrderwithoutCart)
+router.put('/deleteCart/:userId/:productId/:cartId',deleteCart)
 
 //====================maiantane stock=====================================//
 router.post("/maintain",createStock)
+
+//==================create Tech Stock ====================================//
+
+router.post("/createTechProduct",techProduct)
+router.post("/createReview",ratingOnProduct)
 
 
 

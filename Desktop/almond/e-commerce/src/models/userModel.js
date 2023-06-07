@@ -19,8 +19,7 @@ const users = sequelize.define('users',{
         defaultValue: false
     },
     balance:{
-        type: DataTypes.FLOAT,
-
+        type: DataTypes.DECIMAL(10, 2),
     }, 
 });
 

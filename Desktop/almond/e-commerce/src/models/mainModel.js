@@ -25,6 +25,32 @@ db.products= require('./productModel')(sequelize,DataTypes);
 db.orders = require('./orderModel')(sequelize,DataTypes);
 db.likes= require('./likeModel')(sequelize,DataTypes);
 db.datamaintains= require('./dataMaintainModel')(sequelize,DataTypes);
+//================adding electric product=======================//
+db.techRatings = require('./techRatingModel')(sequelize,DataTypes);
+db.techProducts=require('./techModel')(sequelize,DataTypes);
+
+//===========relation between user and techRating====================================//
+// db.users.hasMany(db.techRatings,{
+//     foreignKey:'user_Id',
+//     as:"techRatings"
+// })
+
+// db.techRatings.belongsTo(db.users, {
+//      foreignKey: 'user_Id',
+//      as:"users"
+// })
+
+//======================relation between techRating and techProduct =================//
+// db.techProducts.hasMany(db.techRatings,{
+//     foreignKey:'techProd_Id',
+//     as:"techRatings"
+// })
+
+// db.techRatings.belongsTo(db.techProducts, {
+//      foreignKey: 'techProd_Id',
+//      as:"techProducts"
+// })
+
 
 //====================relation between user and product==============================//
 // db.users.hasMany(db.products,{

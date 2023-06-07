@@ -1,8 +1,8 @@
 const db = require("../models/mainModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mysql= require("mysql")
-const { sequelize, QueryTypes} = require("sequelize");
+const mysql = require("mysql");
+const { sequelize, QueryTypes } = require("sequelize");
 
 const {
   validateEmail,
@@ -14,10 +14,8 @@ const Users = db.users;
 const Products = db.products;
 const Likes = db.likes;
 
-
-
 //=========================create user ==========================================//
- const userCreate = async function (req, res) {
+const userCreate = async function (req, res) {
   let data = req.body;
   const { name, email, number, password } = req.body;
   if (!validateEmail(email))
@@ -64,7 +62,7 @@ const Likes = db.likes;
 //     const {name,number,email,password} = req.body
 //     const now = new Date();
 //     let queries = `INSERT INTO Users (name,number,email,password,createdAt,updatedAt) VALUES (?,?,?,?,?,?)`
-    
+
 //     //console.log(name)
 //     const createUser= await db.sequelize.query( queries,   //sequelize. query
 //         {
@@ -76,7 +74,7 @@ const Likes = db.likes;
 //         where: { id: createUser[0] } // assuming the primary key is "id"
 //     });
 //     console.log(getUser)
-//     res.status(201).send({ data: getUser });    
+//     res.status(201).send({ data: getUser });
 // }
 
 //==========================login user  =====================================================//
@@ -97,13 +95,11 @@ const loginUser = async function (req, res) {
     if (result) {
       let token = jwt.sign({ userId: user.id }, "my second project");
       res.header("x-api-key", token);
-      res
-        .status(200)
-        .send({
-          status: true,
-          message: "logging successfully",
-          data: { user: user, token },
-        });
+      res.status(200).send({
+        status: true,
+        message: "logging successfully",
+        data: { user: user, token },
+      });
     } else {
       return res
         .status(400)
@@ -118,24 +114,22 @@ const loginUser = async function (req, res) {
 //         const { email, password } = data;
 //         const queries = `SELECT * FROM Users WHERE email = "${email}" limit 1`
 //         const [one , two] = await db.sequelize.query(queries);
-//         res.status(200).send({ status: true, data: one});    
-    
+//         res.status(200).send({ status: true, data: one});
+
 //   };
- 
 
 //---------------------raw query for update user ----------------------------------------------------//
 
-// const updateUser = async function(req,res){
-
-// let userId = req.params.userId  
-// //let data = req.body
-// let data = req.query
-// const {name,password} = data 
-// //let queries =`UPDATE Users SET name = '${name}' WHERE id = ${userId}`;   passing data by the postman
-// let queries =`UPDATE Users SET name='${name}' WHERE id = ${userId}`;    // passsing data by the query 
-// let [result] = await db.sequelize.query(queries, {types})
-// res.status(200).send({status:true,data:result})
-// }
+const updateUser = async function (req, res) {
+  let userId = req.params.userId;
+  //let data = req.body
+  let data = req.query;
+  const { name, password } = data;
+  //let queries =`UPDATE Users SET name = '${name}' WHERE id = ${userId}`;   passing data by the postman
+  let queries = `UPDATE Users SET name='${name}' WHERE id = ${userId}`; // passsing data by the query
+  let [result] = await db.sequelize.query(queries, { types });
+  res.status(200).send({ status: true, data: result });
+};
 
 //===============find product based on userId and what is the responce from user side on the perticular product ======================================//
 const findProduct = async function (req, res) {
@@ -167,11 +161,7 @@ const findProduct = async function (req, res) {
 
 //===============find product based on the liks or dislike =============================//
 
-module.exports = { userCreate, loginUser, findProduct};
- 
-
-
-
+module.exports = { userCreate, loginUser, findProduct, updateUser };
 
 //=============@@@@@@@@@@ raw query @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@====================================//
 
@@ -200,7 +190,6 @@ module.exports = { userCreate, loginUser, findProduct};
 
  */
 
-
 // const createUser = async function(req,res){
 //     const {name,number,email,password} = req.body
 //     //console.log(name)
@@ -219,10 +208,7 @@ module.exports = { userCreate, loginUser, findProduct};
 //     const [user] = results;
 //     res.status(201).send({data:user})
 
-
-
 // }
-
 
 // module.exports={createUser}
 

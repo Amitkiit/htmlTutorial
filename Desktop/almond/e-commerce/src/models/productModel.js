@@ -15,21 +15,21 @@ module.exports=(sequelize,DataTypes)=>{
         },
         size:{
             type:DataTypes.ENUM('S','M','L','XL','XX')
-
         },
         price:{
             type:DataTypes.DECIMAL(10, 2),
             allowNull:false
         },
+        quentity:{
+            type:DataTypes.DECIMAL
+        },
+        offerInPercentage:{
+            type:DataTypes.DECIMAL
+        },
         isDeleted:{
             type: DataTypes.BOOLEAN,
             defaultValue:false
         },
-        quentity:{
-            type:DataTypes.DECIMAL
-
-        }
-
     });
 
     return products

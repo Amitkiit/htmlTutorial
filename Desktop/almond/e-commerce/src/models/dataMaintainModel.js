@@ -19,6 +19,10 @@ const datamaintains = sequelize.define('datamaintains',{
     },
     stockSize:{
         type:DataTypes.INTEGER
+    },
+    refund:{
+        type: DataTypes.BOOLEAN,
+        defaultValue:false
     }
 });
 

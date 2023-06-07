@@ -27,12 +27,12 @@ const getProduct = async function (req, res) {
     let allProduct = await Products.findAll();
     return res.status(200).send({ status: true, data: allProduct });
   }
-  let getProduct = await Products.findAll({
+  let getProduct = await Products.findOne({
     where: query,
   });
   if(!getProduct) return res.status(400).send({status:false,message:"this type of product is not  exist"})
 
-  res.status(200).send({ status: true, data: getProduct });
+  res.status(200).send({ status: true, data: getProduct.toJSON()});
 };
 //===================get product based one the user responce(like or dislike)=========================//
 

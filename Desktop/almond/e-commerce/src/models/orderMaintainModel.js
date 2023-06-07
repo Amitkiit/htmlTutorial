@@ -1,15 +1,14 @@
 const { sequelize, DataTypes } = require("sequelize");
 
 module.exports=(sequelize,DataTypes)=>{
-const orders = sequelize.define('orders',{
-    orderquentity:{
+const orderMaintains = sequelize.define('orderMaintains',{
+    quentity:{
         type:DataTypes.INTEGER
     },
-    isDeleted:{
+    orderPrice:{
         type: DataTypes.BOOLEAN,
         defaultValue:false
     },
-
 });
-return orders
+return orderMaintains
 }
